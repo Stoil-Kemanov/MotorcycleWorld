@@ -18,3 +18,8 @@ class ExperienceLevel(models.TextChoices):
     BEGINNER = 'Beginner (0-1 years)', 'Beginner (0-1 years)'
     INTERMEDIATE = 'Intermediate (2-5 years)', 'Intermediate (2-5 years)'
     ADVANCED = 'Advanced (5+ years)', 'Advanced (5+ years)'
+
+
+class EngineType(models.TextChoices):
+    INLINE = 'Inline', 'Inline'
+    V_ENGINE = 'V', 'V'

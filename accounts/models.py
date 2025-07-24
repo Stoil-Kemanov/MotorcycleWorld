@@ -1,7 +1,8 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-from accounts.choices import BodyType, RidingStyle, ExperienceLevel
+from accounts.choices import BodyType, RidingStyle, ExperienceLevel, EngineType
 
 
 class MotoUser(AbstractUser):
@@ -23,3 +24,14 @@ class Profile(models.Model):
     riding_style = models.CharField(max_length=10, choices=RidingStyle, blank=True, null=True)
     experience = models.CharField(max_length=30, choices=ExperienceLevel, blank=True, null=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True, null=True)
+
+
+class OwnedMotorcycle(models.Model):
+    user = models.ForeignKey(MotoUser, on_delete=models.CASCADE, related_name='owned_motorcycle')
+    make = models.CharField(max_length=20)
+    model = models.CharField(max_length=20)
+    production_year = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1800), MaxValueValidator(2025)])
+    engine_type = models.CharField(max_length=20, choices=EngineType)
+    engine_volume = models.PositiveSmallIntegerField(blank=True, null=True)
+    engine_power = models.PositiveSmallIntegerField(blank=True, null=True)
