@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 PROJECT_APPS = [
     'accounts.apps.AccountsConfig',
+    'motorcycles.apps.MotorcyclesConfig',
 ]
 
 INSTALLED_APPS = [
@@ -134,5 +135,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.MotoUser'
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = 'accounts/profile/'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGOUT_REDIRECT_URL = '/'

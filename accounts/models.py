@@ -19,7 +19,7 @@ class Profile(models.Model):
     user = models.OneToOneField(MotoUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    phone_number = models.CharField(max_length=11, blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     height = models.PositiveSmallIntegerField(blank=True, null=True, help_text="Height in centimeters")
     weight = models.PositiveSmallIntegerField(blank=True, null=True, help_text="Weight in kilograms")

@@ -3,12 +3,15 @@ __pycache__/
 *.py[cod]
 *.sqlite3
 *.log
+*.pyc
+*.pyo
 
 # Django
 *.log
 db.sqlite3
 /media/
 staticfiles/
+/static/  # in case you collect static files locally
 
 # Virtual environment
 .venv/
@@ -18,7 +21,11 @@ venv/
 # VSCode or PyCharm
 .idea/
 *.code-workspace
+.vscode/  # VSCode settings folder
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Environment variables (if you use .env files later)
+.env

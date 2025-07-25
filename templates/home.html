@@ -3,20 +3,94 @@
 {% block title %}Home - Motorcycle World{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
+<!-- Hero Section -->
+<div class="jumbotron bg-primary text-white text-center py-5 mb-4 rounded">
+    <div class="container">
+        <h1 class="display-4">🏍️ Welcome to Motorcycle World</h1>
+        <p class="lead">Your ultimate destination for motorcycles, gear, and community</p>
+        {% if not user.is_authenticated %}
+            <hr class="my-4">
+            <p>Join our community of motorcycle enthusiasts today!</p>
+            <a class="btn btn-light btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
+        {% else %}
+            <hr class="my-4">
+            <p>Welcome back, {{ user.profile.first_name|default:user.username }}!</p>
+            <a class="btn btn-light btn-lg" href="{% url 'profile-detail' %}" role="button">View Profile</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h4 class="card-title">🏍️ Find Your Bike</h4>
+                <p class="card-text">Discover motorcycles that match your riding style and preferences. Get personalized recommendations based on your profile.</p>
+                {% if user.is_authenticated %}
+                    <a href="#" class="btn btn-primary">Browse Motorcycles</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Browse</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h4 class="card-title">👕 Gear & Clothing</h4>
+                <p class="card-text">Find the perfect riding gear and clothing that fits your body type and riding style. Safety meets style!</p>
+                {% if user.is_authenticated %}
+                    <a href="#" class="btn btn-primary">Shop Gear</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Shop</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h4 class="card-title">🔧 Services</h4>
+                <p class="card-text">Find trusted motorcycle services in your area. From maintenance to custom modifications.</p>
+                {% if user.is_authenticated %}
+                    <a href="#" class="btn btn-primary">Find Services</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Access</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats or Info -->
+{% if user.is_authenticated %}
+<div class="row mt-4">
+    <div class="col-12">
         <div class="card">
-
+            <div class="card-header">
+                <h4>Quick Links</h4>
+            </div>
             <div class="card-body">
-                <h1 class="card-title">Welcome to Motorcycle World</h1>
-                <p class="card-text">
-                    <h3>Everything you need in the motorcycle world</h3>
-
-                <div class="text-center mt-3">
-                    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <a href="{% url 'profile-detail' %}" class="btn btn-outline-primary btn-block">My Profile</a>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <a href="{% url 'motorcycle-add' %}" class="btn btn-outline-success btn-block">Add Motorcycle</a>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <a href="#" class="btn btn-outline-info btn-block">Browse Gear</a>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <a href="#" class="btn btn-outline-warning btn-block">Find Services</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
