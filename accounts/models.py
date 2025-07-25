@@ -13,6 +13,9 @@ class MotoUser(AbstractUser):
 
 
 class Profile(models.Model):
+
+    # Profile instances are automatically created via post_save signal when a MotoUser is created.
+
     user = models.OneToOneField(MotoUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)

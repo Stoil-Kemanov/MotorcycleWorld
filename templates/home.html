@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Motorcycle World</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Home - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+
+            <div class="card-body">
+                <h1 class="card-title">Welcome to Motorcycle World</h1>
+                <p class="card-text">
+                    <h3>Everything you need in the motorcycle world</h3>
+
+                <div class="text-center mt-3">
+                    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

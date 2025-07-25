@@ -12,7 +12,7 @@ class RegisterView(CreateView):
     model = MotoUser
     form_class = MotoUserCreationForm
     template_name = 'accounts/register.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('accounts/profile-detail.html')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -23,7 +23,7 @@ class RegisterView(CreateView):
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
-    template_name = 'accounts/profile_edit.html'
+    template_name = 'accounts/profile-edit.html'
     success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
@@ -32,7 +32,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = Profile
-    template_name = 'accounts/profile_detail.html'
+    template_name = 'accounts/profile-detail.html'
     context_object_name = 'profile'
 
     def get_object(self, queryset=None):
@@ -42,7 +42,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 class MotorcycleCreateView(LoginRequiredMixin, CreateView):
     model = OwnedMotorcycle
     form_class = OwnedMotorcycleForm
-    template_name = 'accounts/add_motorcycle.html'
+    template_name = 'accounts/motorcycle-add.html'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -53,7 +53,7 @@ class MotorcycleCreateView(LoginRequiredMixin, CreateView):
 class MotorcycleUpdateView(LoginRequiredMixin, UpdateView):
     model = OwnedMotorcycle
     form_class = OwnedMotorcycleForm
-    template_name = 'accounts/motorcycle_edit.html'
+    template_name = 'accounts/motorcycle-edit.html'
     success_url = reverse_lazy('home')
 
     def get_queryset(self):
@@ -62,7 +62,7 @@ class MotorcycleUpdateView(LoginRequiredMixin, UpdateView):
 
 class MotorcycleDeleteView(LoginRequiredMixin, DeleteView):
     model = OwnedMotorcycle
-    template_name = 'accounts/motorcycle_delete.html'
+    template_name = 'accounts/motorcycle-delete.html'
     success_url = reverse_lazy('home')
 
     def get_queryset(self):

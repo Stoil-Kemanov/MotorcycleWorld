@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h3>My Profile</h3>
+                <a href="{% url 'profile-edit' %}" class="btn btn-primary">Edit Profile</a>
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ profile.first_name }} {{ profile.last_name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ profile.phone_number|default:"Not provided" }}</p>
+                <p><strong>Date of Birth:</strong> {{ profile.date_of_birth|default:"Not provided" }}</p>
+                <p><strong>Height:</strong> {{ profile.height|default:"Not provided" }} cm</p>
+                <p><strong>Weight:</strong> {{ profile.weight|default:"Not provided" }} kg</p>
+                <p><strong>Body Type:</strong> {{ profile.get_body_type_display|default:"Not provided" }}</p>
+                <p><strong>Riding Style:</strong> {{ profile.get_riding_style_display|default:"Not provided" }}</p>
+                <p><strong>Experience:</strong> {{ profile.get_experience_display|default:"Not provided" }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h4>My Motorcycles</h4>
+                <a href="{% url 'motorcycle-add' %}" class="btn btn-success btn-sm">Add Bike</a>
+            </div>
+            <div class="card-body">
+                {% for motorcycle in user.ownedmotorcycle_set.all %}
+                    <div class="mb-3 p-2 border rounded">
+                        <h6>{{ motorcycle.make }} {{ motorcycle.model }}</h6>
+                        <small>{{ motorcycle.production_year }} | {{ motorcycle.engine_volume }}cc</small>
+                        <div class="mt-2">
+                            <a href="{% url 'motorcycle-edit' motorcycle.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="{% url 'motorcycle-delete' motorcycle.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No motorcycles added yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
