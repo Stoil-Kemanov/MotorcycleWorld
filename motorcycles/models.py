@@ -13,3 +13,9 @@ class Motorcycle(models.Model):
     engine_type = models.CharField(max_length=20, choices=EngineType)
     engine_volume = models.PositiveSmallIntegerField(blank=True, null=True)
     engine_power = models.PositiveSmallIntegerField(blank=True, null=True)
+
+
+class MotoAccessories(models.Model):
+    name = models.CharField(max_length=20)
+    make = models.CharField(max_length=20)
+    description = models.TextField()
