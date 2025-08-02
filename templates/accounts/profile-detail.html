@@ -11,9 +11,26 @@
                 <a href="{% url 'profile-edit' %}" class="btn btn-primary">Edit Profile</a>
             </div>
             <div class="card-body">
-                <p><strong>Name:</strong> {{ profile.first_name }} {{ profile.last_name }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>Phone:</strong> {{ profile.phone_number|default:"Not provided" }}</p>
+                <!-- Add Profile Picture Section -->
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        {% if profile.profile_pic %}
+                            <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="img-fluid rounded-circle" style="max-height: 150px; max-width: 150px;">
+                        {% else %}
+                            <div class="bg-light d-flex align-items-center justify-content-center rounded-circle" style="height: 150px; width: 150px;">
+                                <span class="text-muted">👤</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9">
+                        <p><strong>Name:</strong> {{ profile.first_name }} {{ profile.last_name }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Phone:</strong> {{ profile.phone_number|default:"Not provided" }}</p>
+                    </div>
+                </div>
+
+                <hr>
+
                 <p><strong>Date of Birth:</strong> {{ profile.date_of_birth|default:"Not provided" }}</p>
                 <p><strong>Height:</strong>
                     {% if profile.height %}
@@ -35,7 +52,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between">

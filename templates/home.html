@@ -28,7 +28,7 @@
                 <h4 class="card-title">🏍️ Find Your Bike</h4>
                 <p class="card-text">Discover motorcycles that match your riding style and preferences. Get personalized recommendations based on your profile.</p>
                 {% if user.is_authenticated %}
-                    <a href="#" class="btn btn-primary">Browse Motorcycles</a>
+                    <a href="{% url 'motorcycle-list' %}" class="btn btn-primary">Browse Motorcycles</a>
                 {% else %}
                     <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Browse</a>
                 {% endif %}
@@ -39,10 +39,13 @@
     <div class="col-lg-4 mb-4">
         <div class="card h-100">
             <div class="card-body text-center">
-                <h4 class="card-title">👕 Gear & Clothing</h4>
-                <p class="card-text">Find the perfect riding gear and clothing that fits your body type and riding style. Safety meets style!</p>
+                <h4 class="card-title">🔧 Parts & Accessories</h4>
+                <p class="card-text">Find the perfect parts and accessories for your motorcycle. From performance upgrades to essential maintenance items.</p>
                 {% if user.is_authenticated %}
-                    <a href="#" class="btn btn-primary">Shop Gear</a>
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'parts-list' %}" class="btn btn-primary btn-sm">Parts</a>
+                        <a href="{% url 'accessories-list' %}" class="btn btn-primary btn-sm">Accessories</a>
+                    </div>
                 {% else %}
                     <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Shop</a>
                 {% endif %}
@@ -53,13 +56,9 @@
     <div class="col-lg-4 mb-4">
         <div class="card h-100">
             <div class="card-body text-center">
-                <h4 class="card-title">🔧 Services</h4>
-                <p class="card-text">Find trusted motorcycle services in your area. From maintenance to custom modifications.</p>
-                {% if user.is_authenticated %}
-                    <a href="#" class="btn btn-primary">Find Services</a>
-                {% else %}
-                    <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Access</a>
-                {% endif %}
+                <h4 class="card-title">🔍 Search Everything</h4>
+                <p class="card-text">Search across our entire inventory of motorcycles, parts, and accessories. Find exactly what you're looking for.</p>
+                <a href="{% url 'search-results' %}" class="btn btn-primary">Start Searching</a>
             </div>
         </div>
     </div>
@@ -75,19 +74,33 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-3 text-center">
-                        <a href="{% url 'profile-detail' %}" class="btn btn-outline-primary btn-block">My Profile</a>
+                    <div class="col-md-3 text-center mb-2">
+                        <a href="{% url 'profile-detail' %}" class="btn btn-outline-primary w-100">My Profile</a>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <a href="{% url 'motorcycle-add' %}" class="btn btn-outline-success btn-block">Add Motorcycle</a>
+                    <div class="col-md-3 text-center mb-2">
+                        <a href="{% url 'motorcycle-list' %}" class="btn btn-outline-success w-100">Browse Bikes</a>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <a href="#" class="btn btn-outline-info btn-block">Browse Gear</a>
+                    <div class="col-md-3 text-center mb-2">
+                        <a href="{% url 'parts-list' %}" class="btn btn-outline-info w-100">Browse Parts</a>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <a href="#" class="btn btn-outline-warning btn-block">Find Services</a>
+                    <div class="col-md-3 text-center mb-2">
+                        <a href="{% url 'accessories-list' %}" class="btn btn-outline-warning w-100">Browse Accessories</a>
                     </div>
                 </div>
+                {% if user.is_staff %}
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-2">
+                            <a href="{% url 'admin-motorcycle-create' %}" class="btn btn-outline-success w-100">Add Motorcycle</a>
+                        </div>
+                        <div class="col-md-4 text-center mb-2">
+                            <a href="{% url 'parts-create' %}" class="btn btn-outline-info w-100">Add Part</a>
+                        </div>
+                        <div class="col-md-4 text-center mb-2">
+                            <a href="{% url 'accessories-create' %}" class="btn btn-outline-warning w-100">Add Accessory</a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

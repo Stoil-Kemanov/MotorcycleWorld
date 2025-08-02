@@ -28,6 +28,9 @@ class Profile(models.Model):
     experience = models.CharField(max_length=30, choices=ExperienceLevel, blank=True, null=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True, null=True)
 
+    def __str__(self):
+        return self.user.username
+
 
 class OwnedMotorcycle(models.Model):
     user = models.ForeignKey(MotoUser, on_delete=models.CASCADE, related_name='owned_motorcycle')

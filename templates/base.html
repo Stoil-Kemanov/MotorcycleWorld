@@ -12,17 +12,63 @@
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">🏍️ Motorcycle World</a>
             
-            <div class="navbar-nav ms-auto">
-                {% if user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'profile-detail' %}">Profile</a>
-                    <form method="post" action="{% url 'logout' %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="nav-link btn btn-link text-decoration-none">Logout</button>
-                    </form>
-                {% else %}
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    <a class="nav-link" href="{% url 'register' %}">Register</a>
-                {% endif %}
+            <!-- Toggle button for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Main Navigation Links -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'motorcycle-list' %}">🏍️ Motorcycles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'parts-list' %}">🔧 Parts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accessories-list' %}">🎒 Accessories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'search-results' %}">🔍 Search</a>
+                    </li>
+                </ul>
+
+                <!-- User Authentication Links -->
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'profile-detail' %}">👤 Profile</a>
+                        </li>
+                        {% if user.is_staff %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    ⚙️ Admin
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{% url 'admin-motorcycle-create' %}">Add Motorcycle</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'parts-create' %}">Add Part</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'accessories-create' %}">Add Accessory</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/admin/">Django Admin</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn btn-link text-decoration-none">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>

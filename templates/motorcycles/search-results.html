@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🔍 Search Results</h2>
+    {% if total_results %}
+        <span class="badge bg-primary fs-6">{{ total_results }} result{{ total_results|pluralize }}</span>
+    {% endif %}
+</div>
+
+<!-- Search Form -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get">
+            <div class="row">
+                <div class="col-md-3">
+                    {{ form.search }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.category }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.min_price }}
+                </div>
+                <div class="col-md-2">
+                    {{ form.max_price }}
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+                <div class="col-md-1">
+                    <a href="{% url 'search-results' %}" class="btn btn-outline-secondary w-100">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if search_performed %}
+    {% if not total_results %}
+        <div class="alert alert-info text-center">
+            <h4>No results found</h4>
+            <p>Try adjusting your search criteria or browse our categories.</p>
+            <div class="mt-3">
+                <a href="{% url 'motorcycle-list' %}" class="btn btn-primary me-2">Browse Motorcycles</a>
+                <a href="{% url 'parts-list' %}" class="btn btn-primary me-2">Browse Parts</a>
+                <a href="{% url 'accessories-list' %}" class="btn btn-primary">Browse Accessories</a>
+            </div>
+        </div>
+    {% else %}
+        <!-- Motorcycles Results -->
+        {% if motorcycles %}
+            <h3>🏍️ Motorcycles ({{ motorcycles|length }})</h3>
+            <div class="row mb-4">
+                {% for motorcycle in motorcycles %}
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card">
+                            {% if motorcycle.image_url %}
+                                <img src="{{ motorcycle.image_url }}" class="card-img-top" alt="{{ motorcycle }}" style="height: 150px; object-fit: contain;">
+                            {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                                    <span class="text-muted">🏍️ No Image</span>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ motorcycle }}</h5>
+                                <p class="card-text">€{{ motorcycle.price }}</p>
+                                <a href="{% url 'motorcycle-detail' motorcycle.pk %}" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Parts Results -->
+        {% if parts %}
+            <h3>🔧 Parts ({{ parts|length }})</h3>
+            <div class="row mb-4">
+                {% for part in parts %}
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card">
+                            {% if part.image_url %}
+                                <img src="{{ part.image_url }}" class="card-img-top" alt="{{ part }}" style="height: 150px; object-fit: contain;">
+                            {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                                    <span class="text-muted">🔧 No Image</span>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ part.name }}</h5>
+                                <p class="card-text">{{ part.make }} - €{{ part.price }}</p>
+                                <a href="{% url 'parts-detail' part.pk %}" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Accessories Results -->
+        {% if accessories %}
+            <h3>🎒 Accessories ({{ accessories|length }})</h3>
+            <div class="row mb-4">
+                {% for accessory in accessories %}
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card">
+                            {% if accessory.image_url %}
+                                <img src="{{ accessory.image_url }}" class="card-img-top" alt="{{ accessory }}" style="height: 150px; object-fit: contain;">
+                            {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                                    <span class="text-muted">🎒 No Image</span>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ accessory.name }}</h5>
+                                <p class="card-text">{{ accessory.make }} - €{{ accessory.price }}</p>
+                                <a href="{% url 'accessories-detail' accessory.pk %}" class="btn btn-sm btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% else %}
+    <div class="text-center">
+        <h4>Enter your search criteria above</h4>
+        <p class="text-muted">Search across motorcycles, parts, and accessories</p>
+        <div class="mt-3">
+            <a href="{% url 'motorcycle-list' %}" class="btn btn-outline-primary me-2">Browse Motorcycles</a>
+            <a href="{% url 'parts-list' %}" class="btn btn-outline-primary me-2">Browse Parts</a>
+            <a href="{% url 'accessories-list' %}" class="btn btn-outline-primary">Browse Accessories</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

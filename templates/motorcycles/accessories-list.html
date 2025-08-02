@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Motorcycle Accessories - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🎒 Motorcycle Accessories</h2>
+    {% if user.is_staff %}
+        <a href="{% url 'accessories-create' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add Accessory
+        </a>
+    {% endif %}
+</div>
+
+<!-- Accessories Grid -->
+<div class="row">
+    {% for accessory in accessories %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                {% if accessory.image_url %}
+                    <img src="{{ accessory.image_url }}" class="card-img-top" alt="{{ accessory }}" style="height: 200px; object-fit: contain;">
+                {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <span class="text-muted">🎒 No Image</span>
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ accessory.name }}</h5>
+                    <p class="card-text">
+                        <strong>Make:</strong> {{ accessory.make }}<br>
+                        <strong>Price:</strong> €{{ accessory.price }}<br>
+                        <small class="text-muted">{{ accessory.description|truncatewords:15 }}</small>
+                    </p>
+                    <div class="mt-auto">
+                        <a href="{% url 'accessories-detail' accessory.pk %}" class="btn btn-primary">View Details</a>
+                        {% if user.is_staff %}
+                            <a href="{% url 'accessories-edit' accessory.pk %}" class="btn btn-sm btn-outline-warning">Edit</a>
+                            <a href="{% url 'accessories-delete' accessory.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4>No accessories found</h4>
+                <p>Be the first to add a motorcycle accessory to our collection!</p>
+                {% if user.is_staff %}
+                    <a href="{% url 'accessories-create' %}" class="btn btn-success">Add First Accessory</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+    <nav aria-label="Accessories pagination">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+            {% endif %}
+            
+            <li class="page-item active">
+                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            </li>
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

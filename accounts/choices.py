@@ -23,3 +23,5 @@ class ExperienceLevel(models.TextChoices):
 class EngineType(models.TextChoices):
     INLINE = 'Inline', 'Inline'
     V_ENGINE = 'V', 'V'
+    OTHER = 'Other', 'Other'
+
