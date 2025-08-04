@@ -48,4 +48,3 @@ class OwnedMotorcycleForm(forms.ModelForm):
     class Meta:
         model = OwnedMotorcycle
         exclude = ['user']
-

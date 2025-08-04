@@ -30,7 +30,11 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{% url 'parts-detail' object.pk %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        {% if request.GET.next == 'detail' %}
+                            <a href="{% url 'parts-detail' object.pk %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        {% else %}
+                            <a href="{% url 'parts-list' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        {% endif %}
                         <button type="submit" class="btn btn-danger">Yes, Delete</button>
                     </div>
                 </form>

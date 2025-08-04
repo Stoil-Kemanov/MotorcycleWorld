@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service.name }} - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h1>🔧 {{ service.name }}</h1>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Specialization:</strong> {{ service.get_specialization_display }}</p>
+                        <p><strong>Location:</strong> {{ service.location }}</p>
+                        <p><strong>Working Hours:</strong> {{ service.working_hours }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Phone:</strong> <a href="tel:{{ service.phone }}">{{ service.phone }}</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:{{ service.email }}">{{ service.email }}</a></p>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="btn-group" role="group">
+                    <a href="{% url 'service-list' %}" class="btn btn-secondary">Back to Services</a>
+                    {% if perms.services.change_service %}
+                        <a href="{% url 'service-edit' service.pk %}?next=detail" class="btn btn-warning">Edit</a>
+                    {% endif %}
+                    {% if perms.services.delete_service %}
+                        <a href="{% url 'service-delete' service.pk %}?next=detail" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,8 +1,10 @@
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, TemplateView
+from django.contrib import messages
+from accounts.utils import recommend_motorcycles, recommend_clothing, get_compatibility_color
 
 from accounts.forms import MotoUserCreationForm, ProfileForm, OwnedMotorcycleForm
 from accounts.models import MotoUser, Profile, OwnedMotorcycle
@@ -67,3 +69,57 @@ class MotorcycleDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return OwnedMotorcycle.objects.filter(user=self.request.user)
+
+
+class FindMyBikeView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/find-my-bike.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if user has a complete profile
+        profile = request.user.profile
+        if not all([profile.body_type, profile.riding_style, profile.experience]):
+            messages.warning(
+                request,'Please complete your profile first to get personalized bike recommendations!')
+            return redirect('profile-edit')
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.request.user.profile
+        recommendations = recommend_motorcycles(profile)
+
+        context.update({
+            'profile': profile,
+            'recommendations': recommendations,
+            'get_compatibility_color': get_compatibility_color,
+            'has_recommendations': len(recommendations) > 0
+        })
+        return context
+
+
+class FindMyClothingView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/find-my-clothing.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if user has a complete profile
+        profile = request.user.profile
+        if not all([profile.body_type, profile.riding_style]):
+            messages.warning(
+                request,'Please complete your profile first to get personalized clothing recommendations!')
+            return redirect('profile-edit')
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.request.user.profile
+        recommendations = recommend_clothing(profile)
+
+        context.update({
+            'profile': profile,
+            'recommendations': recommendations,
+            'get_compatibility_color': get_compatibility_color,
+            'has_recommendations': len(recommendations) > 0
+        })
+        return context

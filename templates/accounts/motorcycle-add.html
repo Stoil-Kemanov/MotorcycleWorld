@@ -18,12 +18,18 @@
                            <div class="mb-3">
                                <label for="{{ form.make.id_for_label }}" class="form-label">Make</label>
                                {{ form.make }}
+                               {% if form.make.errors %}
+                                    <div class="text-danger">{{ form.make.errors }}</div>
+                               {% endif %}
                            </div>
                        </div>
                        <div class="col-md-6">
                            <div class="mb-3">
                                <label for="{{ form.model.id_for_label }}" class="form-label">Model</label>
                                {{ form.model }}
+                               {% if form.model.errors %}
+                                    <div class="text-danger">{{ form.model.errors }}</div>
+                               {% endif %}
                            </div>
                        </div>
                    </div>
@@ -33,12 +39,18 @@
                            <div class="mb-3">
                                <label for="{{ form.production_year.id_for_label }}" class="form-label">Production Year</label>
                                {{ form.production_year }}
+                               {% if form.production_year.errors %}
+                                    <div class="text-danger">{{ form.production_year.errors }}</div>
+                               {% endif %}
                            </div>
                        </div>
                        <div class="col-md-6">
                            <div class="mb-3">
                                <label for="{{ form.engine_type.id_for_label }}" class="form-label">Engine Type</label>
                                {{ form.engine_type }}
+                               {% if form.engine_type.errors %}
+                                    <div class="text-danger">{{ form.engine_type.errors }}</div>
+                               {% endif %}
                            </div>
                        </div>
                    </div>
@@ -48,12 +60,18 @@
                            <div class="mb-3">
                                <label for="{{ form.engine_volume.id_for_label }}" class="form-label">Engine Volume (cc)</label>
                                {{ form.engine_volume }}
+                               {% if form.engine_volume.errors %}
+                                    <div class="text-danger">{{ form.engine_volume.errors }}</div>
+                               {% endif %}
                            </div>
                        </div>
                        <div class="col-md-6">
                            <div class="mb-3">
                                <label for="{{ form.engine_power.id_for_label }}" class="form-label">Engine Power (hp)</label>
                                {{ form.engine_power }}
+                               {% if form.engine_power.errors %}
+                                    <div class="text-danger">{{ form.engine_power.errors }}</div>
+                               {% endif %}
                            </div>
                        </div>
                    </div>

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Check Traffic Fines - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>🚔 Check Your Traffic Fines</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Important:</strong> This will redirect you to the official MVR (Ministry of Internal Affairs) website to check your traffic violations and fines.
+                </div>
+
+                <p>Check for any outstanding traffic fines and violations on your driving record. This service is provided by the Bulgarian Ministry of Internal Affairs.</p>
+
+                <div class="text-center">
+                    <a href="https://e-uslugi.mvr.bg/services/obligations"
+                       target="_blank"
+                       class="btn btn-primary btn-lg">
+                        🔗 Check Fines on MVR Website
+                    </a>
+                </div>
+
+                <hr>
+
+                <h5>What You'll Need:</h5>
+                <ul>
+                    <li>Your driving license number</li>
+                    <li>Personal identification number (EGN)</li>
+                    <li>Vehicle registration number (if checking vehicle fines)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

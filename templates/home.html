@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<div class="jumbotron bg-primary text-white text-center py-5 mb-4 rounded">
+<div class="jumbotron bg-secondary text-white text-center py-5 mb-4 rounded">
     <div class="container">
         <h1 class="display-4">🏍️ Welcome to Motorcycle World</h1>
         <p class="lead">Your ultimate destination for motorcycles, gear, and community</p>
@@ -14,7 +14,7 @@
             <a class="btn btn-light btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
         {% else %}
             <hr class="my-4">
-            <p>Welcome back, {{ user.profile.first_name|default:user.username }}!</p>
+            <h3>Welcome back, {{ user.profile.first_name|default:user.username }}!</h3>
             <a class="btn btn-light btn-lg" href="{% url 'profile-detail' %}" role="button">View Profile</a>
         {% endif %}
     </div>
@@ -25,29 +25,70 @@
     <div class="col-lg-4 mb-4">
         <div class="card h-100">
             <div class="card-body text-center">
-                <h4 class="card-title">🏍️ Find Your Bike</h4>
-                <p class="card-text">Discover motorcycles that match your riding style and preferences. Get personalized recommendations based on your profile.</p>
+                <h4 class="card-title">🎯 Personalized Picks</h4>
+                <p class="card-text">Get personalized motorcycle and clothing recommendations based on your riding profile and preferences.</p>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'motorcycle-list' %}" class="btn btn-primary">Browse Motorcycles</a>
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'find-my-bike' %}" class="btn btn-secondary btn-sm">Find My Bike</a>
+                        <a href="{% url 'find-my-clothing' %}" class="btn btn-secondary btn-sm">Find My Gear</a>
+                    </div>
                 {% else %}
-                    <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Browse</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-secondary">Join for Recommendations</a>
                 {% endif %}
             </div>
         </div>
     </div>
 
+{#    <div class="col-lg-4 mb-4">#}
+{#        <div class="card h-100">#}
+{#            <div class="card-body text-center">#}
+{#                <h4 class="card-title">🔧 Parts & Accessories</h4>#}
+{#                <p class="card-text">Find the perfect parts and accessories for your motorcycle. From performance upgrades to essential maintenance items.</p>#}
+{#                {% if user.is_authenticated %}#}
+{#                    <div class="btn-group" role="group">#}
+{#                        <a href="{% url 'parts-list' %}" class="btn btn-secondary btn-sm">Parts</a>#}
+{#                        <a href="{% url 'accessories-list' %}" class="btn btn-secondary btn-sm">Accessories</a>#}
+{#                    </div>#}
+{#                {% else %}#}
+{#                    <a href="{% url 'register' %}" class="btn btn-outline-secondary">Join to Shop</a>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{#     <div class="col-lg-4 mb-4">#}
+{#        <div class="card h-100">#}
+{#            <div class="card-body text-center">#}
+{#                <h4 class="card-title">🧥 Clothing & Gear</h4>#}
+{#                <p class="card-text">Find the perfect motorcycle clothing and protective gear. Safety meets style for every riding adventure.</p>#}
+{#                {% if user.is_authenticated %}#}
+{#                    <a href="{% url 'clothing-list' %}" class="btn btn-secondary">Browse Clothing</a>#}
+{#                {% else %}#}
+{#                    <a href="{% url 'register' %}" class="btn btn-outline-secondary">Join to Shop</a>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{#    <div class="col-lg-4 mb-4">#}
+{#        <div class="card h-100">#}
+{#            <div class="card-body text-center">#}
+{#                <h4 class="card-title">🔧 Find Services</h4>#}
+{#                <p class="card-text">Find trusted motorcycle services in your area. From maintenance to custom modifications and repairs.</p>#}
+{#                <a href="{% url 'service-list' %}" class="btn btn-secondary">Browse Services</a>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
     <div class="col-lg-4 mb-4">
         <div class="card h-100">
             <div class="card-body text-center">
-                <h4 class="card-title">🔧 Parts & Accessories</h4>
-                <p class="card-text">Find the perfect parts and accessories for your motorcycle. From performance upgrades to essential maintenance items.</p>
+                <h4 class="card-title">🚔 Check Fines</h4>
+                <p class="card-text">Check for any outstanding traffic fines and violations on your driving record.</p>
                 {% if user.is_authenticated %}
-                    <div class="btn-group" role="group">
-                        <a href="{% url 'parts-list' %}" class="btn btn-primary btn-sm">Parts</a>
-                        <a href="{% url 'accessories-list' %}" class="btn btn-primary btn-sm">Accessories</a>
-                    </div>
+                    <a href="{% url 'mvr-fines' %}" class="btn btn-secondary">Check Now</a>
                 {% else %}
-                    <a href="{% url 'register' %}" class="btn btn-outline-primary">Join to Shop</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-secondary">Join to Check</a>
                 {% endif %}
             </div>
         </div>
@@ -57,8 +98,8 @@
         <div class="card h-100">
             <div class="card-body text-center">
                 <h4 class="card-title">🔍 Search Everything</h4>
-                <p class="card-text">Search across our entire inventory of motorcycles, parts, and accessories. Find exactly what you're looking for.</p>
-                <a href="{% url 'search-results' %}" class="btn btn-primary">Start Searching</a>
+                <p class="card-text">Search across our entire inventory of motorcycles, parts, accessories and clothing. Find exactly what you're looking for.</p>
+                <a href="{% url 'search-results' %}" class="btn btn-secondary">Start Searching</a>
             </div>
         </div>
     </div>
@@ -75,7 +116,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3 text-center mb-2">
-                        <a href="{% url 'profile-detail' %}" class="btn btn-outline-primary w-100">My Profile</a>
+                        <a href="{% url 'profile-detail' %}" class="btn btn-outline-secondary w-100">My Profile</a>
                     </div>
                     <div class="col-md-3 text-center mb-2">
                         <a href="{% url 'motorcycle-list' %}" class="btn btn-outline-success w-100">Browse Bikes</a>
@@ -85,6 +126,18 @@
                     </div>
                     <div class="col-md-3 text-center mb-2">
                         <a href="{% url 'accessories-list' %}" class="btn btn-outline-warning w-100">Browse Accessories</a>
+                    </div>
+                    <div class="col-md-3 text-center mb-2">
+                        <a href="{% url 'clothing-list' %}" class="btn btn-outline-info w-100">Browse Clothing</a>
+                    </div>
+                    <div class="col-md-3 text-center mb-2">
+                        <a href="{% url 'service-list' %}" class="btn btn-outline-warning w-100">Browse Services</a>
+                    </div>
+                    <div class="col-md-2 text-center mb-2">
+                        <a href="{% url 'find-my-bike' %}" class="btn btn-outline-info w-100">Find My Bike</a>
+                    </div>
+                    <div class="col-md-2 text-center mb-2">
+                        <a href="{% url 'find-my-clothing' %}" class="btn btn-outline-info w-100">Find My Gear</a>
                     </div>
                 </div>
                 {% if user.is_staff %}
@@ -98,6 +151,12 @@
                         </div>
                         <div class="col-md-4 text-center mb-2">
                             <a href="{% url 'accessories-create' %}" class="btn btn-outline-warning w-100">Add Accessory</a>
+                        </div>
+                        <div class="col-md-3 text-center mb-2">
+                            <a href="{% url 'clothing-create' %}" class="btn btn-outline-success w-100">Add Clothing</a>
+                        </div>
+                        <div class="col-md-3 text-center mb-2">
+                            <a href="{% url 'service-create' %}" class="btn btn-outline-secondary w-100">Add Service</a>
                         </div>
                     </div>
                 {% endif %}

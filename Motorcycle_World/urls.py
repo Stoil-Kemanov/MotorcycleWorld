@@ -20,11 +20,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from common import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('', include('motorcycles.urls')),
     path('accounts/', include('accounts.urls')),
+    path('motorcycles/', include('motorcycles.urls')),
+    path('clothing/', include('clothing.urls')),
+    path('services/', include('services.urls')),
+    path('cart/', include('cart.urls')),
+    path('fines/', views.mvr_fines_check, name='mvr-fines'),
 ]
 
 if settings.DEBUG:

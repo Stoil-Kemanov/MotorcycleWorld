@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load cart_extras %}
+{% block title %}{{ clothing }} - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        {% if clothing.image_url %}
+            <img src="{{ clothing.image_url }}" class="img-fluid rounded" alt="{{ clothing }}">
+        {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center rounded" style="height: 400px;">
+                <span class="text-muted display-1">🧥️</span>
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h1>{{ clothing.make }} {{ clothing.model }}</h1>
+        <h3 class="text-success">€{{ clothing.price }}</h3>
+        
+        <hr>
+        
+        <div class="row">
+            <div class="col-sm-6">
+                <p><strong>Category:</strong> {{ clothing.get_category_display }}</p>
+                <p><strong>Fit:</strong> {{ clothing.get_fit_display }}</p>
+                <p><strong>Style:</strong> {{ clothing.get_style_display }}</p>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="btn-group" role="group">
+            <a href="{% url 'clothing-list' %}" class="btn btn-secondary">Back to List</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'add-to-cart' clothing|content_type_id clothing.pk %}" class="btn btn-success">Add to Cart</a>
+            {% endif %}
+            {% if perms.clothing.change_clothing %}
+                <a href="{% url 'clothing-edit' clothing.pk %}?next=detail" class="btn btn-warning">Edit</a>
+            {% endif %}
+            {% if perms.clothing.delete_clothing %}
+                <a href="{% url 'clothing-delete' clothing.pk %}?next=detail" class="btn btn-danger">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

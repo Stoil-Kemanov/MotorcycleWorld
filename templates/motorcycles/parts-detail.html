@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load cart_extras %}
 {% block title %}{{ part }} - Motorcycle World{% endblock %}
 
 {% block content %}
@@ -35,9 +35,14 @@
         
         <div class="btn-group" role="group">
             <a href="{% url 'parts-list' %}" class="btn btn-secondary">Back to Parts</a>
-            {% if user.is_staff %}
-                <a href="{% url 'parts-edit' part.pk %}" class="btn btn-warning">Edit</a>
-                <a href="{% url 'parts-delete' part.pk %}" class="btn btn-danger">Delete</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'add-to-cart' part|content_type_id part.pk %}" class="btn btn-success">Add to Cart</a>
+            {% endif %}
+            {% if perms.motorcycles.change_motorcycleparts %}
+                <a href="{% url 'parts-edit' part.pk %}?next=detail" class="btn btn-warning">Edit</a>
+            {% endif %}
+            {% if perms.motorcycles.delete_motorcycleparts %}
+                <a href="{% url 'parts-delete' part.pk %}?next=detail" class="btn btn-danger">Delete</a>
             {% endif %}
         </div>
     </div>
@@ -76,7 +81,7 @@
             <div class="alert alert-info">
                 <h5>Universal Compatibility</h5>
                 <p>This part doesn't have specific motorcycle compatibility listed, which means it may be a universal part or compatibility hasn't been specified yet.</p>
-                {% if user.is_staff %}
+                {% if perms.motorcycles.add_motorcycle %}
                     <a href="{% url 'parts-edit' part.pk %}" class="btn btn-sm btn-warning">Add Compatible Motorcycles</a>
                 {% endif %}
             </div>

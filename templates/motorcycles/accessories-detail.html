@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load cart_extras %}
 {% block title %}{{ accessory }} - Motorcycle World{% endblock %}
 
 {% block content %}
@@ -30,9 +30,14 @@
         
         <div class="btn-group" role="group">
             <a href="{% url 'accessories-list' %}" class="btn btn-secondary">Back to Accessories</a>
-            {% if user.is_staff %}
-                <a href="{% url 'accessories-edit' accessory.pk %}" class="btn btn-warning">Edit</a>
-                <a href="{% url 'accessories-delete' accessory.pk %}" class="btn btn-danger">Delete</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'add-to-cart' accessory|content_type_id accessory.pk %}" class="btn btn-success">Add to Cart</a>
+            {% endif %}
+            {% if perms.motorcycles.change_motorcycleaccessories %}
+                <a href="{% url 'accessories-edit' accessory.pk %}?next=detail" class="btn btn-warning">Edit</a>
+            {% endif %}
+            {% if perms.motorcycles.delete_motorcycleaccessories %}
+                <a href="{% url 'accessories-delete' accessory.pk %}?next=detail" class="btn btn-danger">Delete</a>
             {% endif %}
         </div>
     </div>

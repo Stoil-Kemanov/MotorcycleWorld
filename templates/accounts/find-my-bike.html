@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load account_extras %}
+{% block title %}Find My Bike - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🎯 Find Your Perfect Bike</h2>
+    <a href="{% url 'profile-edit' %}" class="btn btn-outline-primary">Update Profile</a>
+</div>
+
+<!-- User Profile Summary -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>📋 Your Profile</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <strong>Body Type:</strong> {{ profile.get_body_type_display }}
+            </div>
+            <div class="col-md-3">
+                <strong>Riding Style:</strong> {{ profile.get_riding_style_display }}
+            </div>
+            <div class="col-md-3">
+                <strong>Experience:</strong> {{ profile.get_experience_display }}
+            </div>
+            <div class="col-md-3">
+                <strong>Height:</strong> {{ profile.height|default:"Not specified" }}{% if profile.height %}cm{% endif %}
+            </div>
+        </div>
+        <p class="mt-2 mb-0 text-muted">Recommendations are based on your profile preferences and experience level.</p>
+    </div>
+</div>
+
+{% if has_recommendations %}
+    <!-- Recommendations -->
+    <h3>🏍️ Recommended Motorcycles for You</h3>
+    <div class="row">
+        {% for rec in recommendations %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    {% if rec.motorcycle.image_url %}
+                        <img src="{{ rec.motorcycle.image_url }}" class="card-img-top" alt="{{ rec.motorcycle }}" style="height: 200px; object-fit: contain;">
+                    {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <span class="text-muted">🏍️ No Image</span>
+                        </div>
+                    {% endif %}
+
+                    <!-- Compatibility Badge -->
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-{{ rec.score|compatibility_color }}">
+                            {{ rec.score }}% Match
+                        </span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ rec.motorcycle.make }} {{ rec.motorcycle.model }}</h5>
+                        <p class="card-text">
+                            <strong>Year:</strong> {{ rec.motorcycle.production_year }}<br>
+                            <strong>Type:</strong> {{ rec.motorcycle.get_type_display }}<br>
+                            <strong>Engine:</strong> {{ rec.motorcycle.engine_volume }}cc, {{ rec.motorcycle.engine_power }}HP<br>
+                            <strong>Price:</strong> €{{ rec.motorcycle.price }}
+                        </p>
+
+                        <!-- Compatibility Info -->
+                        <div class="alert alert-{{ rec.score|compatibility_color }} py-2 mb-2">
+                            <small><strong>{{ rec.compatibility }}</strong></small>
+                        </div>
+
+                        <div class="mt-auto">
+                            <a href="{% url 'motorcycle-detail' rec.motorcycle.pk %}" class="btn btn-primary">View Details</a>
+                            {% if user.is_authenticated %}
+                                {% load cart_extras %}
+                                <a href="{% url 'add-to-cart' rec.motorcycle|content_type_id rec.motorcycle.pk %}" class="btn btn-sm btn-success">Add to Cart</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Explanation -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>🤔 How We Calculate Matches</h4>
+        </div>
+        <div class="card-body">
+            <p>Our recommendation system considers multiple factors from your profile:</p>
+            <ul>
+                <li><strong>Riding Style:</strong> Matches your preferred riding type with appropriate motorcycles</li>
+                <li><strong>Experience Level:</strong> Recommends engine sizes suitable for your skill level</li>
+                <li><strong>Body Type:</strong> Considers ergonomics and comfort for your physique</li>
+                <li><strong>Engine Power:</strong> Suggests power levels appropriate for your experience</li>
+                <li><strong>Height:</strong> Takes into account seat height and riding position comfort</li>
+            </ul>
+            <div class="row mt-3">
+                <div class="col-md-2"><span class="badge bg-success">80%+</span> Excellent Match</div>
+                <div class="col-md-2"><span class="badge bg-info">65%+</span> Great Match</div>
+                <div class="col-md-2"><span class="badge bg-primary">50%+</span> Good Match</div>
+                <div class="col-md-2"><span class="badge bg-warning">35%+</span> Fair Match</div>
+                <div class="col-md-2"><span class="badge bg-danger">Below 35%</span> Poor Match</div>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+    <!-- No Recommendations -->
+    <div class="alert alert-warning text-center">
+        <h4>No motorcycles match your current profile</h4>
+        <p>Try updating your profile preferences or check back when we add more motorcycles to our inventory.</p>
+        <a href="{% url 'profile-edit' %}" class="btn btn-warning">Update Profile</a>
+        <a href="{% url 'motorcycle-list' %}" class="btn btn-outline-primary">Browse All Motorcycles</a>
+    </div>
+{% endif %}
+
+<!-- Call to Action -->
+<div class="card mt-4">
+    <div class="card-body text-center">
+        <h5>Need Help Choosing?</h5>
+        <p>Our recommendations are a starting point. Consider visiting our services directory to find expert advice near you.</p>
+        <a href="{% url 'service-list' %}" class="btn btn-outline-primary">Find Motorcycle Services</a>
+    </div>
+</div>
+{% endblock %}

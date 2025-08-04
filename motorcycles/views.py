@@ -1,18 +1,18 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
-from motorcycles.choices import CategorySearch
+from common.choices import CategorySearch
 from motorcycles.forms import UniversalSearchForm, MotorcycleCreationForm, MotorcyclePartsCreationForm, \
     MotorcycleAccessoriesCreationForm
 from motorcycles.models import Motorcycle, MotorcycleParts, MotorcycleAccessories
-
+from clothing.models import Clothing
 
 # PUBLIC VIEWS
 
 class UniversalSearchView(TemplateView):
-    # searches across motorcycles, parts and accessories
+    # searches across motorcycles, parts/accessories and clothing
 
     template_name = 'motorcycles/search-results.html'
 
@@ -23,6 +23,7 @@ class UniversalSearchView(TemplateView):
         motorcycles = Motorcycle.objects.none()
         parts = MotorcycleParts.objects.none()
         accessories = MotorcycleAccessories.objects.none()
+        clothing = Clothing.objects.none()
         total_results = 0
 
         if form.is_valid():
@@ -42,6 +43,9 @@ class UniversalSearchView(TemplateView):
                 if category == CategorySearch.ALL or category == CategorySearch.ACCESSORIES:
                     accessories = MotorcycleAccessories.objects.all()
 
+                if category == CategorySearch.ALL or category == CategorySearch.CLOTHING:
+                    clothing = Clothing.objects.all()
+
                 if search:
                     motorcycles = motorcycles.filter(
                         Q(make__icontains=search) |
@@ -58,23 +62,31 @@ class UniversalSearchView(TemplateView):
                         Q(description__icontains=search)
                     )
 
+                    clothing = clothing.filter(
+                        Q(make__icontains=search) |
+                        Q(model__icontains=search)
+                    )
+
                 if min_price:
                     motorcycles = motorcycles.filter(price__gte=min_price)
                     parts = parts.filter(price__gte=min_price)
                     accessories = accessories.filter(price__gte=min_price)
+                    clothing = clothing.filter(price__gte=min_price)
 
                 if max_price:
                     motorcycles = motorcycles.filter(price__lte=max_price)
                     parts = parts.filter(price__lte=max_price)
                     accessories = accessories.filter(price__lte=max_price)
+                    clothing = clothing.filter(price__lte=max_price)
 
-                total_results = motorcycles.count() + parts.count() + accessories.count()
+                total_results = motorcycles.count() + parts.count() + accessories.count() +clothing.count()
 
         context.update({
             'form': form,
             'motorcycles': motorcycles[:10],
             'parts': parts[:10],
             'accessories': accessories[:10],
+            'clothing': clothing[:10],
             'total_results': total_results,
             'search_performed': bool(
                 self.request.GET.get('search') or self.request.GET.get('min_price') or self.request.GET.get(
@@ -125,50 +137,41 @@ class AccessoriesDetailView(DetailView):
 
 # ADMIN-ONLY VIEWS (Private)
 
-def is_staff_user(user):
-    return user.is_staff
-
-
-class MotorcycleCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class MotorcycleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'motorcycles.add_motorcycle'
     model = Motorcycle
     form_class = MotorcycleCreationForm
     template_name = 'motorcycles/admin-motorcycle-create.html'
     success_url = reverse_lazy('motorcycle-list')
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
 
-
-class MotorcycleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class MotorcycleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'motorcycles.change_motorcycle'
     model = Motorcycle
     form_class = MotorcycleCreationForm
     template_name = 'motorcycles/admin-motorcycle-edit.html'
-    success_url = reverse_lazy('motorcycle-list')
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
+    def get_success_url(self):
+        return reverse_lazy('motorcycle-detail', kwargs={'pk': self.object.pk})
 
 
-class MotorcycleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class MotorcycleDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'motorcycles.delete_motorcycle'
     model = Motorcycle
     template_name = 'motorcycles/admin-motorcycle-delete.html'
     success_url = reverse_lazy('motorcycle-list')
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
 
-
-class PartsCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class PartsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'motorcycles.add_motorcycleparts'
     model = MotorcycleParts
     form_class = MotorcyclePartsCreationForm
     template_name = 'motorcycles/parts-create.html'
     success_url = reverse_lazy('parts-list')
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
 
-
-class PartsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PartsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'motorcycles.change_motorcycleparts'
     model = MotorcycleParts
     form_class = MotorcyclePartsCreationForm
     template_name = 'motorcycles/parts-edit.html'
@@ -176,43 +179,34 @@ class PartsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('parts-detail', kwargs={'pk': self.object.pk})
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
 
-
-class PartsDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class PartsDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'motorcycles.delete_motorcycleparts'
     model = MotorcycleParts
     template_name = 'motorcycles/parts-delete.html'
     success_url = reverse_lazy('parts-list')
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
 
-
-class AccessoriesCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class AccessoriesCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'motorcycles.add_motorcycleaccessories'
     model = MotorcycleAccessories
     form_class = MotorcycleAccessoriesCreationForm
     template_name = 'motorcycles/accessories-create.html'
     success_url = reverse_lazy('accessories-list')
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
 
-
-class AccessoriesUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class AccessoriesUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'motorcycles.change_motorcycleaccessories'
     model = MotorcycleAccessories
     form_class = MotorcycleAccessoriesCreationForm
     template_name = 'motorcycles/accessories-edit.html'
-    success_url = reverse_lazy('accessories-list')
 
-    def test_func(self):
-        return is_staff_user(self.request.user)
+    def get_success_url(self):
+        return reverse_lazy('accessories-detail', kwargs={'pk': self.object.pk})
 
 
-class AccessoriesDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class AccessoriesDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'motorcycles.delete_motorcycleaccessories'
     model = MotorcycleAccessories
     template_name = 'motorcycles/accessories-delete.html'
     success_url = reverse_lazy('accessories-list')
-
-    def test_func(self):
-        return is_staff_user(self.request.user)

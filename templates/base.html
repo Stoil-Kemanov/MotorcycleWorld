@@ -30,7 +30,35 @@
                         <a class="nav-link" href="{% url 'accessories-list' %}">🎒 Accessories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'search-results' %}">🔍 Search</a>
+                        <a class="nav-link" href="{% url 'clothing-list' %}">🧥 Clothing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'service-list' %}">🔧 Services</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                🎯 Find My
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'find-my-bike' %}">🏍️ Find My Bike</a></li>
+                                <li><a class="dropdown-item" href="{% url 'find-my-clothing' %}">🧥 Find My Clothing</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'mvr-fines' %}">🚔 Check Fines</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{% url 'search-results' %}">🔍 Search</a>#}
+{#                    </li>#}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart-detail' %}">
+                            🛒 Cart
+                            {% if cart_items_count > 0 %}
+                                <span class="badge bg-primary">{{ cart_items_count }}</span>
+                            {% endif %}
+                        </a>
                     </li>
                 </ul>
 
@@ -49,6 +77,8 @@
                                     <li><a class="dropdown-item" href="{% url 'admin-motorcycle-create' %}">Add Motorcycle</a></li>
                                     <li><a class="dropdown-item" href="{% url 'parts-create' %}">Add Part</a></li>
                                     <li><a class="dropdown-item" href="{% url 'accessories-create' %}">Add Accessory</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'clothing-create' %}">Add Clothing</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'service-create' %}">Add Service</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="/admin/">Django Admin</a></li>
                                 </ul>
@@ -75,6 +105,15 @@
 
     <!-- Main Content -->
     <div class="container mt-4">
+          {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </div>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - Motorcycle World{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>🛒 Shopping Cart</h2>
+</div>
+
+{% if cart and cart.items.all %}
+    <div class="row">
+        <div class="col-md-8">
+            {% for item in cart.items.all %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-2">
+                                {% if item.product.image_url %}
+                                    <img src="{{ item.product.image_url }}" class="img-fluid" alt="{{ item.product }}" style="height: 80px; object-fit: contain;">
+                                {% else %}
+                                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 80px;">
+                                        <span class="text-muted">📦</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <h5>{{ item.product }}</h5>
+                                <p class="text-muted">€{{ item.product.price }} each</p>
+                            </div>
+                            <div class="col-md-3">
+                                <form method="post" action="{% url 'update-cart-item' item.id %}" class="d-flex">
+                                    {% csrf_token %}
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control me-2" style="width: 80px;">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                                </form>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>€{{ item.total_price }}</strong>
+                            </div>
+                            <div class="col-md-1">
+                                <a href="{% url 'remove-from-cart' item.id %}" class="btn btn-sm btn-outline-danger">×</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Order Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Items ({{ cart.total_items }}):</span>
+                        <span>€{{ cart.total_price }}</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Total:</strong>
+                        <strong>€{{ cart.total_price }}</strong>
+                    </div>
+                    <a href="{% url 'checkout' %}" class="btn btn-primary w-100 mb-2">Proceed to Checkout</a>
+                    <a href="{% url 'clear-cart' %}" class="btn btn-outline-danger w-100">Clear Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center">
+        <h4>Your cart is empty</h4>
+        <p>Start shopping to add items to your cart!</p>
+        <a href="{% url 'motorcycle-list' %}" class="btn btn-primary me-2">Browse Motorcycles</a>
+        <a href="{% url 'clothing-list' %}" class="btn btn-primary">Browse Clothing</a>
+        <a href="{% url 'parts-list' %}" class="btn btn-primary me-2">Browse Parts</a>
+        <a href="{% url 'accessories-list' %}" class="btn btn-primary">Browse Accessories</a>
+    </div>
+{% endif %}
+{% endblock %}

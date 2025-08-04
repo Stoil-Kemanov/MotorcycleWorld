@@ -1,11 +1,11 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-from accounts.choices import EngineType
-from motorcycles.choices import MotorcycleType, MotorcyclePartsCategory
+from common.choices import MotorcycleType, MotorcyclePartsCategory, EngineType
+from common.mixins import TimeStampMixin
 
 
-class Motorcycle(models.Model):
+class Motorcycle(TimeStampMixin, models.Model):
     make = models.CharField(max_length=20)
     model = models.CharField(max_length=20)
     production_year = models.PositiveSmallIntegerField(
@@ -17,35 +17,37 @@ class Motorcycle(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)], default=0.00)
     image_url = models.URLField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         return f'{self.make} {self.model} {self.production_year}'
 
 
-class MotorcycleParts(models.Model):
+class MotorcycleProductsBase(TimeStampMixin, models.Model):
     name = models.CharField(max_length=20)
     make = models.CharField(max_length=20)
-    category = models.CharField(max_length=20, choices=MotorcyclePartsCategory, default=MotorcyclePartsCategory.OTHER)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)], default=0.00)
-    compatible_motorcycles = models.ManyToManyField(Motorcycle, blank=True)
     image_url = models.URLField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
+        ordering = ['-created_at']
 
     def __str__(self):
         return f'{self.name} {self.make}'
 
-    class Meta:
+
+class MotorcycleParts(MotorcycleProductsBase):
+    category = models.CharField(max_length=20, choices=MotorcyclePartsCategory, default=MotorcyclePartsCategory.OTHER)
+    compatible_motorcycles = models.ManyToManyField(Motorcycle, blank=True)
+
+    class Meta(MotorcycleProductsBase.Meta):
         verbose_name_plural = 'Motorcycle Parts'
 
 
-class MotorcycleAccessories(models.Model):
-    name = models.CharField(max_length=20)
-    make = models.CharField(max_length=20)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)], default=0.00)
-    image_url = models.URLField(blank=True, null=True)
+class MotorcycleAccessories(MotorcycleProductsBase):
 
-    def __str__(self):
-        return f'{self.name} {self.make}'
-
-    class Meta:
+    class Meta(MotorcycleProductsBase.Meta):
         verbose_name_plural = 'Motorcycle Accessories'

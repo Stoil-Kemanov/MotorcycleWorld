@@ -56,7 +56,11 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{% url 'accessories-detail' object.pk %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        {% if request.GET.next == 'detail' %}
+                            <a href="{% url 'accessories-detail' object.pk %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        {% else %}
+                            <a href="{% url 'accessories-list' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                        {% endif %}
                         <button type="submit" class="btn btn-warning">Update Accessory</button>
                     </div>
                 </form>

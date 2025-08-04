@@ -1,6 +1,6 @@
 from django import forms
 
-from motorcycles.choices import CategorySearch
+from common.choices import CategorySearch
 from motorcycles.models import Motorcycle, MotorcycleParts, MotorcycleAccessories
 
 

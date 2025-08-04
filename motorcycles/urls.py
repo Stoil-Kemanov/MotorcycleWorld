@@ -6,8 +6,8 @@ urlpatterns = [
 
     # PUBLIC VIEWS
 
-    path('motorcycles/', views.MotorcycleListView.as_view(), name='motorcycle-list'),
-    path('motorcycles/<int:pk>/', views.MotorcycleDetailView.as_view(), name='motorcycle-detail'),
+    path('', views.MotorcycleListView.as_view(), name='motorcycle-list'),
+    path('<int:pk>/', views.MotorcycleDetailView.as_view(), name='motorcycle-detail'),
 
     path('parts/', views.PartsListView.as_view(), name='parts-list'),
     path('parts/<int:pk>/', views.PartsDetailView.as_view(), name='parts-detail'),
@@ -19,9 +19,9 @@ urlpatterns = [
 
     # PRIVATE VIEWS FOR CRUD
 
-    path('motorcycles/create/', views.MotorcycleCreateView.as_view(), name='admin-motorcycle-create'),
-    path('motorcycles/<int:pk>/edit/', views.MotorcycleUpdateView.as_view(), name='admin-motorcycle-edit'),
-    path('motorcycles/<int:pk>/delete/', views.MotorcycleDeleteView.as_view(), name='admin-motorcycle-delete'),
+    path('create/', views.MotorcycleCreateView.as_view(), name='admin-motorcycle-create'),
+    path('<int:pk>/edit/', views.MotorcycleUpdateView.as_view(), name='admin-motorcycle-edit'),
+    path('<int:pk>/delete/', views.MotorcycleDeleteView.as_view(), name='admin-motorcycle-delete'),
 
     path('parts/create/', views.PartsCreateView.as_view(), name='parts-create'),
     path('parts/<int:pk>/edit/', views.PartsUpdateView.as_view(), name='parts-edit'),

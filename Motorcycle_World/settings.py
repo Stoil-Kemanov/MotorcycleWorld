@@ -31,8 +31,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 PROJECT_APPS = [
+    'common',
     'accounts.apps.AccountsConfig',
     'motorcycles.apps.MotorcyclesConfig',
+    'clothing.apps.ClothingConfig',
+    'services.apps.ServicesConfig',
+    'cart'
 ]
 
 INSTALLED_APPS = [
@@ -67,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart_processor',
             ],
         },
     },
@@ -136,5 +141,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.MotoUser'
 
-LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
