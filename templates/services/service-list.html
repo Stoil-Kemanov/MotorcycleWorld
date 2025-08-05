@@ -41,7 +41,6 @@
         <div class="col-12">
             <div class="alert alert-info text-center">
                 <h4>No services found</h4>
-                <p>Be the first to add a motorcycle service to our directory!</p>
                 {% if perms.services.add_service %}
                     <a href="{% url 'service-create' %}" class="btn btn-success">Add First Service</a>
                 {% endif %}
