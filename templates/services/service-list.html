@@ -26,7 +26,7 @@
                         <strong>Working Hours:</strong> {{ service.working_hours }}
                     </p>
                     <div class="mt-auto">
-                        <a href="{% url 'service-detail' service.pk %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'service-detail' service.pk %}" class="btn btn-secondary">View Details</a>
                         {% if perms.services.change_service %}
                             <a href="{% url 'service-edit' service.pk %}?next=list" class="btn btn-sm btn-outline-warning">Edit</a>
                         {% endif %}

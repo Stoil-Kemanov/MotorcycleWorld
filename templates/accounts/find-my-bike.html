@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="mt-auto">
-                            <a href="{% url 'motorcycle-detail' rec.motorcycle.pk %}" class="btn btn-primary">View Details</a>
+                            <a href="{% url 'motorcycle-detail' rec.motorcycle.pk %}" class="btn btn-secondary">View Details</a>
                             {% if user.is_authenticated %}
                                 {% load cart_extras %}
                                 <a href="{% url 'add-to-cart' rec.motorcycle|content_type_id rec.motorcycle.pk %}" class="btn btn-sm btn-success">Add to Cart</a>
@@ -111,7 +111,7 @@
         <h4>No motorcycles match your current profile</h4>
         <p>Try updating your profile preferences or check back when we add more motorcycles to our inventory.</p>
         <a href="{% url 'profile-edit' %}" class="btn btn-warning">Update Profile</a>
-        <a href="{% url 'motorcycle-list' %}" class="btn btn-outline-primary">Browse All Motorcycles</a>
+        <a href="{% url 'motorcycle-list' %}" class="btn btn-outline-secondary">Browse All Motorcycles</a>
     </div>
 {% endif %}
 

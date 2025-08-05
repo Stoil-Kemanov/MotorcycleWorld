@@ -32,7 +32,7 @@
                         <small class="text-muted">{{ accessory.description|truncatewords:15 }}</small>
                     </p>
                     <div class="mt-auto">
-                        <a href="{% url 'accessories-detail' accessory.pk %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'accessories-detail' accessory.pk %}" class="btn btn-secondary">View Details</a>
                         {% if perms.motorcycles.change_motorcycleaccessories %}
                             <a href="{% url 'accessories-edit' accessory.pk %}?next=list" class="btn btn-sm btn-outline-warning">Edit</a>
                         {% endif %}

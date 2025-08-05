@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="mt-auto">
-                            <a href="{% url 'clothing-detail' rec.clothing.pk %}" class="btn btn-primary">View Details</a>
+                            <a href="{% url 'clothing-detail' rec.clothing.pk %}" class="btn btn-secondary">View Details</a>
                             {% if user.is_authenticated %}
                                 {% load cart_extras %}
                                 <a href="{% url 'add-to-cart' rec.clothing|content_type_id rec.clothing.pk %}" class="btn btn-sm btn-success">Add to Cart</a>
@@ -131,7 +131,7 @@
         <h4>No clothing matches your current profile</h4>
         <p>Try updating your profile preferences or check back when we add more clothing to our inventory.</p>
         <a href="{% url 'profile-edit' %}" class="btn btn-warning">Update Profile</a>
-        <a href="{% url 'clothing-list' %}" class="btn btn-outline-primary">Browse All Clothing</a>
+        <a href="{% url 'clothing-list' %}" class="btn btn-outline-secondary">Browse All Clothing</a>
     </div>
 {% endif %}
 

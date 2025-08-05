@@ -33,7 +33,7 @@
                         <strong>Price:</strong> €{{ clothing.price }}
                     </p>
                     <div class="mt-auto">
-                        <a href="{% url 'clothing-detail' clothing.pk %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'clothing-detail' clothing.pk %}" class="btn btn-secondary">View Details</a>
                         {% if perms.clothing.change_clothing %}
                             <a href="{% url 'clothing-edit' clothing.pk %}?next=list" class="btn btn-sm btn-outline-warning">Edit</a>
                         {% endif %}
