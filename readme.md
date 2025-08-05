@@ -1,5 +1,7 @@
 # Motorcycle World - Django Web Application
 
+🌐 Live Demo: https://motorcycle-world-sk-hzbzfzf9cbb0h6bh.italynorth-01.azurewebsites.net
+
 A comprehensive web platform for motorcycle enthusiasts featuring product catalogs, personalized recommendations, shopping cart functionality, and services directory.
 
 ## 🚀 Setup Instructions
